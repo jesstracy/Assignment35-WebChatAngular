@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US" ng-app="WebChatAngularApp">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="js/chat-ng-controller.js"></script>
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-    In HTML home page
+<body ng-controller="SampleController">
+{{! changing the mustache delimiter so it doesn't conflict with  }}
+{{! the default angularjs delimeters - https://mustache.github.io/mustache.5.html for more info  }}
+{{=<% %>=}}
+
+    <input type="text" placeholder="Enter a message here" ng-model="inputMessage"/>
+    <input type="button" ng-click="sendMessage(inputMessage)" value="send"/>
+
+    <div>
+        <h3>Messages: </h3>
+        <span ng-repeat="message in messageList">
+            {{message.text}} <br/>
+        </span>
+
+    </div>
+
 </body>
 </html>
