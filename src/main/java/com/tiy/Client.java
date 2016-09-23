@@ -12,39 +12,17 @@ import java.util.Scanner;
  */
 
 public class Client {
+    BufferedReader in;
+    PrintWriter out;
+
     public static void main(String[] args) {
         System.out.println("MyClient running...");
 
         Client myClient = new Client();
 
+
         try {
-            // connect to server
-            Socket clientSocket = new Socket("localhost", 8005);
-
-            // set up input and output streams
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-            //Ask for the user's name:
-            Scanner myScanner = new Scanner(System.in);
-//            String userName = myClient.getUserName(myScanner);
-//            System.out.println(userName);
-
-            // give server your name
-//            out.println(userName);
-
-            boolean keepChatting = true;
-            while (keepChatting) {
-                // get user's message and send it to the chat room
-                System.out.print("Write a message: ");
-                String userMessage = myScanner.nextLine();
-                String serverResponse = myClient.sendUserMessage(userMessage, in, out);
-                System.out.println("Server replied: " + serverResponse);
-            }
-
-            // close connection
-            clientSocket.close();
-
+            myClient.createNewClientSocket();
 
         } catch(IOException exception) {
             exception.printStackTrace();
@@ -58,27 +36,37 @@ public class Client {
         return userName;
     }
 
-//    public boolean sendUserMessage(String userMessage, BufferedReader in, PrintWriter out) throws IOException {
-//
-//        if (userMessage.equalsIgnoreCase("exit")) {
-//            return false;
-//        }
-//        out.println(userMessage);
-//        // will have to fix here - make a loop here that stops when we get the end statement.
-//        System.out.println("Server's response: " + in.readLine());
-//        if (userMessage.equals("history")) {
-//            String serverResponse = in.readLine();
-//            while (!serverResponse.equals("Tx:History.End")) {
-//                System.out.println(serverResponse);
-//                serverResponse = in.readLine();
-//            }
-//        }
-////        System.out.println("Server's response: " + serverResponse);
-//        return true;
-//    }
+    public void createNewClientSocket() throws IOException {
+        // connect to server
+        Socket clientSocket = new Socket("localhost", 8005);
 
-    public String sendUserMessage(String userMessage, BufferedReader in, PrintWriter out) throws IOException {
+        // set up input and output streams
+        out = new PrintWriter(clientSocket.getOutputStream(), true);
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+        //Ask for the user's name:
+        Scanner myScanner = new Scanner(System.in);
+//            String userName = myClient.getUserName(myScanner);
+//            System.out.println(userName);
+
+        // give server your name
+//            out.println(userName);
+
+        boolean keepChatting = true;
+        while (keepChatting) {
+            // get user's message and send it to the chat room
+            System.out.print("Write a message: ");
+            String userMessage = myScanner.nextLine();
+            String serverResponse = sendUserMessage(userMessage);
+            System.out.println("Server replied: " + serverResponse);
+        }
+
+        // close connection
+        clientSocket.close();
+    }
+
+
+    public String sendUserMessage(String userMessage) throws IOException {
         out.println(userMessage);
         // will have to fix here - make a loop here that stops when we get the end statement.
         String serverResponse = in.readLine();

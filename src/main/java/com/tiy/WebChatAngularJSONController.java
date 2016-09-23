@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +17,23 @@ public class WebChatAngularJSONController {
     @Autowired
     MessageRepository messages;
 
+    Client myClient = new Client();
+
     @RequestMapping(path = "/getMessages.json", method = RequestMethod.GET)
     public List<Message> getAllMessages(String messageText) {
-        Message newMessage = new Message(messageText);
-        messages.save(newMessage);
-        Iterable<Message> listOfMessages = messages.findAll();
         List<Message> allMessages = new ArrayList<>();
-        for (Message message : listOfMessages) {
-            allMessages.add(message);
+        try {
+
+            String serverResponse = myClient.sendUserMessage(messageText);
+            System.out.println(serverResponse);
+            Message newMessage = new Message(messageText);
+            messages.save(newMessage);
+            Iterable<Message> listOfMessages = messages.findAll();
+            for (Message message : listOfMessages) {
+                allMessages.add(message);
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
         return allMessages;
     }

@@ -36,7 +36,7 @@ public class ClientTest {
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
         String testMessage = "test.user.message";
-        String serverResponse = myClient.sendUserMessage(testMessage, in, out);
+        String serverResponse = myClient.sendUserMessage(testMessage);
         assertEquals("Echo: test.user.message", serverResponse);
 
     }
