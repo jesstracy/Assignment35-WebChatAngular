@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -43,36 +44,20 @@ public class Client {
         // set up input and output streams
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-        //Ask for the user's name:
-        Scanner myScanner = new Scanner(System.in);
-//            String userName = myClient.getUserName(myScanner);
-//            System.out.println(userName);
-
-        // give server your name
-//            out.println(userName);
-
-        boolean keepChatting = true;
-        while (keepChatting) {
-            // get user's message and send it to the chat room
-            System.out.print("Write a message: ");
-            String userMessage = myScanner.nextLine();
-            String serverResponse = sendUserMessage(userMessage);
-            System.out.println("Server replied: " + serverResponse);
-        }
-
-        // close connection
-        clientSocket.close();
     }
 
 
-    public String sendUserMessage(String userMessage) throws IOException {
+    public ArrayList<String> sendUserMessage(String userMessage) throws IOException {
         out.println(userMessage);
         // will have to fix here - make a loop here that stops when we get the end statement.
-        String serverResponse = in.readLine();
-
+        ArrayList<String> allMessages = new ArrayList<>();
+        String serverResponse;
+        while (!(serverResponse = in.readLine()).equals("TXT::DONE")) {
+            System.out.println("*In sendUserMessage* " + serverResponse);
+            allMessages.add(serverResponse);
+        }
 //        System.out.println("Server's response: " + serverResponse);
-        return serverResponse;
+        return allMessages;
     }
 }
 

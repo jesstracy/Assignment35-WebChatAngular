@@ -13,13 +13,16 @@ public class Message {
     int id;
 
     @Column(nullable = false)
+    String name;
+
+    @Column(nullable = false)
     String text;
 
     public Message() {
     }
 
-    public Message(int id, String text) {
-        this.id = id;
+    public Message(String name, String text) {
+        this.name = name;
         this.text = text;
     }
 
@@ -41,5 +44,13 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

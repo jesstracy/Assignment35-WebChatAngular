@@ -11,17 +11,21 @@
 {{! changing the mustache delimiter so it doesn't conflict with  }}
 {{! the default angularjs delimeters - https://mustache.github.io/mustache.5.html for more info  }}
 {{=<% %>=}}
+    <h4>Enter your name: </h4>
+    <input type="text" placeholder="Name" ng-model="username">
 
-    <input type="text" placeholder="Enter a message here" ng-model="inputMessage"/>
-    <input type="button" ng-click="sendMessage(inputMessage)" value="send"/>
+    <span ng-if="username">
+        <input type="text" placeholder="Enter a message here" ng-model="inputMessage"/>
+        <input type="button" ng-click="sendMessage(username, inputMessage)" value="send"/>
 
-    <div>
-        <h3>Messages: </h3>
-        <span ng-repeat="message in messageList">
-            {{message.text}} <br/>
-        </span>
+        <div>
+            <h3>Messages: </h3>
+            <span ng-repeat="message in messageList">
+                {{message}} <br/>
+            </span>
 
-    </div>
+        </div>
+    </span>
 
 </body>
 </html>

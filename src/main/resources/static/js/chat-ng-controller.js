@@ -1,9 +1,9 @@
 angular.module('WebChatAngularApp', [])
    .controller('SampleController', function($scope, $http) {
-        $scope.sendMessage = function(inputMessage) {
+        $scope.sendMessage = function(username, inputMessage) {
             console.log("In sendMessage function in ng controller!");
 
-            $http.get("/getMessages.json?messageText=" + inputMessage)
+            $http.get("/sendMessage.json?username=" + username + "messageText=" + inputMessage)
                 .then(
                     function successCallback(response) {
                         console.log(response.data);

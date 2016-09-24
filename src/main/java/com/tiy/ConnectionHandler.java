@@ -1,5 +1,7 @@
 package com.tiy;
 
+import jodd.json.JsonParser;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +30,7 @@ public class ConnectionHandler implements Runnable {
         }
     }
 
+    //Instead I'm going to make it receive json message, deserialize it, (save it to db), and send back a list of all messages (from arraylist now, db later?)
     public void handleIncomingConnection(Socket clientSocket) throws IOException {
 
         System.out.println("Now displaying info about who has connected to our server: ");
@@ -39,22 +42,40 @@ public class ConnectionHandler implements Runnable {
         PrintWriter outputToClient = new PrintWriter(clientSocket.getOutputStream(), true);
 
         String inputLine;
+//        while((inputLine = inputFromClient.readLine()) != null) {
+//            if (!inputLine.equals("history")) {
+//                System.out.println("Received message \"" + inputLine + "\" from " + clientSocket.toString());
+//                outputToClient.println(": " + inputLine);
+//                myServer.addToAllMessages(inputLine);
+//            } else {
+//                outputToClient.println("Now printing history!");
+//                for (String message : myServer.allMessages) {
+////                    System.out.println("Now printing history!");
+//                    outputToClient.println(message);
+//                    System.out.println(message);
+//                }
+//                outputToClient.println("HISTORY::END.");
+//
+//            }
+//        }
+
         while((inputLine = inputFromClient.readLine()) != null) {
-            if (!inputLine.equals("history")) {
-                System.out.println("Received message \"" + inputLine + "\" from " + clientSocket.toString());
-                outputToClient.println("Echo: " + inputLine);
-                myServer.addToAllMessages(inputLine);
-            } else {
-                outputToClient.println("Now printing history!");
-                for (String message : myServer.allMessages) {
-//                    System.out.println("Now printing history!");
-                    outputToClient.println(message);
-                    System.out.println(message);
-                }
-                outputToClient.println("HISTORY::END.");
-
+            System.out.println("Received message \"" + inputLine + "\" from " + clientSocket.toString());
+            Message currentMessage = jsonRestore(inputLine);
+            String messageContent = currentMessage.getName() + " said: " + currentMessage.getText();
+            myServer.addToAllMessages(messageContent);
+            for (String message : myServer.allMessages) {
+                outputToClient.println(message);
             }
+            outputToClient.println("TXT::DONE");
         }
-
     }
+
+    public Message jsonRestore(String jsonTD) {
+        JsonParser toDoItemParser = new JsonParser();
+        Message message = toDoItemParser.parse(jsonTD, Message.class);
+
+        return message;
+    }
+
 }

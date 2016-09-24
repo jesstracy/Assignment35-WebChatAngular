@@ -19,7 +19,8 @@ public class Server {
         myServer.startServer();
     }
 
-    ArrayList<String> allMessages = new ArrayList<String>();
+    ArrayList<String> allMessages = new ArrayList<>();
+
     public void startServer() {
         try {
             System.out.println("Server running!");
@@ -41,8 +42,8 @@ public class Server {
         }
     }
 
-    public void addToAllMessages(String message) {
-        allMessages.add(message);
+    public void addToAllMessages(String messageContent) {
+        allMessages.add(messageContent);
     }
 
 
