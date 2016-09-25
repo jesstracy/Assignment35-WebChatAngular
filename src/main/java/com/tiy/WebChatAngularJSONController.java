@@ -60,6 +60,16 @@ public class WebChatAngularJSONController {
         return listOfMessages;
     }
 
+    @RequestMapping(path = "/history.json", method = RequestMethod.GET)
+    public ArrayList<Message> historyJson(String username) {
+        Iterable<Message> myMessages = messages.findByName(username);
+        ArrayList<Message> listOfUserMessages = new ArrayList<>();
+        for (Message message : myMessages) {
+            listOfUserMessages.add(message);
+        }
+        return listOfUserMessages;
+    }
+
     public String jsonSave(Message messageToSave) {
         JsonSerializer jsonSerializer = new JsonSerializer().deep(true);
         String jsonString = jsonSerializer.serialize(messageToSave);

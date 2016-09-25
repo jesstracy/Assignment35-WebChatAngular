@@ -33,6 +33,13 @@
             </span>
 
         </div>
+
+        <br/><br/>
+        <h4>Show my message history: </h4>
+        <input type="button" ng-click="showHistory()" value="History"/>
+        <span ng-repeat="m in historyList">
+            <br/> {{m.name}} said: {{m.text}}
+        </span>
     </span>
 
 </body>
