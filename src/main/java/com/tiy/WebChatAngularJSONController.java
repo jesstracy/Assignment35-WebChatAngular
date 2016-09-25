@@ -47,6 +47,8 @@ public class WebChatAngularJSONController {
         try {
             myClient.createNewClientSocket();
             Message newMessage = new Message(username, messageText);
+            //save message to db
+            messages.save(newMessage);
             //serialize message
             String serializedMessage = jsonSave(newMessage);
             //send to server -- method

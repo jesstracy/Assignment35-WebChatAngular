@@ -1,6 +1,7 @@
 package com.tiy;
 
 import jodd.json.JsonParser;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,6 +63,8 @@ public class ConnectionHandler implements Runnable {
         while((inputLine = inputFromClient.readLine()) != null) {
             System.out.println("Received message \"" + inputLine + "\" from " + clientSocket.toString());
             Message currentMessage = jsonRestore(inputLine);
+            //Saving to db not working!!! :-(
+//            myServer.saveMessageToDB(currentMessage);
             String messageContent = currentMessage.getName() + " said: " + currentMessage.getText();
             myServer.addToAllMessages(messageContent);
             for (String message : myServer.allMessages) {

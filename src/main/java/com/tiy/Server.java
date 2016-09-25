@@ -1,5 +1,7 @@
 package com.tiy;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,6 +20,9 @@ public class Server {
         Server myServer = new Server();
         myServer.startServer();
     }
+
+    @Autowired
+    MessageRepository messages;
 
     ArrayList<String> allMessages = new ArrayList<>();
 
@@ -44,6 +49,10 @@ public class Server {
 
     public void addToAllMessages(String messageContent) {
         allMessages.add(messageContent);
+    }
+
+    public void saveMessageToDB(Message message) {
+        messages.save(message);
     }
 
 
